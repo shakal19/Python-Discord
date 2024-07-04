@@ -18,17 +18,17 @@ class CustomEmbed(discord.Embed):
         url,
         description,
         color,
-        author_name,
-        thumbnail_url,
-        field_name,
-        field_value,
-        footer_text,
     ):
         super().__init__(title=title, url=url, description=description, color=color)
+
+    def set_properties(
+        self, author_name, thumbnail_url, field_name, field_value, footer_text
+    ):
         self.set_author(name=author_name)
         self.set_thumbnail(url=thumbnail_url)
         self.add_field(name=field_name, value=field_value, inline=True)
         self.set_footer(text=footer_text)
+        
 
 
 load_dotenv()
@@ -42,23 +42,30 @@ bot = MyBot("!")
 
 @bot.command()
 async def embed(ctx):
-    thumbnail = "https://images.stockcake.com/public/0/8/1/08143e8f-beee-4d51-bb33-8b28558f5dc5_large/designing-virtual-worlds-stockcake.jpg"
+    """
+    Creates and sends the embed.
 
+    Args:
+        ctx (str): context of the embed
+    """
+    thumbnail = "https://images.stockcake.com/public/0/8/1/08143e8f-beee-4d51-bb33-8b28558f5dc5_large/designing-virtual-worlds-stockcake.jpg"
     myEmbed = CustomEmbed(
         title="CustomEmbed",
         url="https://google.com",
         description="This is a description.",
         color=0x06600,
-        author_name="Vuk",
-        thumbnail_url=thumbnail,
-        field_name="My field",
-        field_value="Football",
-        footer_text="FooterText is this!",
+    )
+    myEmbed.set_properties(
+        "Vuk", thumbnail, "Football wins", "Real Madrid", "Tiny text"
     )
     await ctx.send(embed=myEmbed)
 
 
 def main():
+    """
+    Main function
+
+    """
     bot_token = os.getenv("bot_token")
     if bot_token is not None:
         try:
